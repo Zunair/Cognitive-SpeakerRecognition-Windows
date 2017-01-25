@@ -18,7 +18,7 @@ namespace SPIDIdentificationAPI_WPF_Samples
     {
 
 //#if DEBUG
-        private static string WordList = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\LINKS\Data\SPID" + ".TXT";
+        internal static string WordList = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\LINKS\Data\WordList\SPID" + ".TXT";
 //#else
 //        private static string WordList = PublicClass.WordListPath + "SPID" + ".TXT";
 //#endif

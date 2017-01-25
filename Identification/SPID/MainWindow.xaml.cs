@@ -25,6 +25,10 @@ namespace SPID
             InitializeComponent();
 
             GetMethods(typeof(StaticClass), ref listBox);
+            if (!System.IO.Directory.Exists(StaticClass.WordList + "\\.."))
+            {
+                MessageBox.Show("Please make sure LINKS is initialized atleast once before using any of these functions.");
+            }
         }
 
         static void GetMethods(Type type, ref ListBox lbox)

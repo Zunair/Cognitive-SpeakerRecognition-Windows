@@ -17,8 +17,8 @@ namespace SPID
     class StaticClass
     {
 
-//#if DEBUG
-        private static string WordList = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\LINKS\Data\SPID" + ".TXT";
+        //#if DEBUG
+        internal static string WordList = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\LINKS\Data\SPID" + ".TXT";
 //#else
 //        private static string WordList = PublicClass.WordListPath + "SPID" + ".TXT";
 //#endif
