@@ -12,7 +12,7 @@ using System.Linq;
 using System.Speech.Recognition;
 using jarvisWPF;
 
-namespace SPIDIdentificationAPI_WPF_Samples
+namespace SPID
 {
     class StaticClass
     {
@@ -23,7 +23,7 @@ namespace SPIDIdentificationAPI_WPF_Samples
 //        private static string WordList = PublicClass.WordListPath + "SPID" + ".TXT";
 //#endif
 
-        public static SpeakerIdentificationServiceClient _serviceClient { get; private set; }
+        internal static SpeakerIdentificationServiceClient _serviceClient { get; private set; }
 
         #region Public Functions Used by LINKS
         /// <summary>
