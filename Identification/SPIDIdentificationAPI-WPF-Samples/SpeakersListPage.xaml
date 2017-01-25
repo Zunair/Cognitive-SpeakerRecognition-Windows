@@ -24,6 +24,7 @@
         <StackPanel Grid.Row="1" Margin="0,5,0,0" Orientation="Horizontal">
             <TextBlock>Click on [Update List] to load all profiles</TextBlock>
             <Button x:Name="_UpdateBtn" Margin="5,0,0,0" Content="_Update List" Click="_UpdateBtn_Click"/>
+            <Button x:Name="_ResetBtn" Margin="5,0,0,0" Content="_Reset Profiles" Click="_ResetBtn_Click"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -32,6 +32,8 @@
 // 
 
 using SampleUserControlLibrary;
+using System;
+using System.Threading;
 using System.Windows;
 
 namespace SPIDIdentificationAPI_WPF_Samples
@@ -52,23 +54,51 @@ namespace SPIDIdentificationAPI_WPF_Samples
             }
         }
 
+        public static void _OnLoad()
+        {
+            //System.Diagnostics.Debugger.Break();
+
+            Thread t = new Thread(LoadMainWindow);
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+        }
+
+        public static MainWindow SPIDWindow;
+        public static void LoadMainWindow()
+        {
+            SPIDWindow = new MainWindow();
+            SPIDWindow.Show();
+            SPIDWindow.Closed += (s, e) => System.Windows.Threading.Dispatcher.ExitAllFrames();
+            System.Windows.Threading.Dispatcher.Run();
+        }
+
         /// <summary>
         /// Constructor to initialize the Main Window
         /// </summary>
         public MainWindow()
         {
-            InitializeComponent();
-
-            _scenariosControl.SampleTitle = "Speaker Identification Sample";
-            _scenariosControl.SampleScenarioList = new Scenario[]
+            try
             {
+                InitializeComponent();
+
+                _scenariosControl.SampleTitle = "Speaker Identification";
+                _scenariosControl.SampleScenarioList = new Scenario[]
+                {
                 new Scenario{ Title = "Enroll Speakers", PageClass = typeof(EnrollSpeakersPage)},
                 new Scenario{ Title = "Identify File", PageClass = typeof(IdentifyFilePage)},
-            };
+                };
 
-            _scenariosControl.Disclaimer = "Microsoft will receive the audio files you upload and may use them to improve Speaker Recognition API and related services. By submitting an audio, you confirm you have consent from everyone in it.";
+                _scenariosControl.Disclaimer = "Microsoft will receive the audio files you upload and may use them to improve Speaker Recognition API and related services. By submitting an audio, you confirm you have consent from everyone in it.";
 
-            _scenariosControl.ClearLog();
+                _scenariosControl.ClearLog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            if (System.Diagnostics.Debugger.IsAttached)
+                test();
         }
 
         /// <summary>
@@ -78,6 +108,24 @@ namespace SPIDIdentificationAPI_WPF_Samples
         public void Log(string message)
         {
             _scenariosControl.Log(message);
+        }
+
+        async void test()
+        {
+            try
+            {
+
+                StaticClass.OnLoad();
+                //string a = await StaticClass.GetIdentity(@"\\SNXXMWPIT004\Users\zfayaz\AppData\Roaming\LINKS\Customization\Speech\Recognized\Zun.wav", "true");
+                string a = await StaticClass.GetIdentity(@"\\SNXXMWPIT004\Users\zfayaz\AppData\Roaming\LINKS\Customization\Speech\Recognized\Ash.wav", "true");
+                string b = await StaticClass.GetSpeakerName(a, "Nice to see you again {{!Name!}}", "Sounds like {{!Name!}}, am I correct?", "Hello {{!Name!}}, nice to meet you.");
+
+                MessageBox.Show(b);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
     }
 }

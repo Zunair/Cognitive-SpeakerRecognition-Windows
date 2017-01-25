@@ -35,8 +35,10 @@ using Microsoft.ProjectOxford.SpeakerRecognition;
 using Microsoft.ProjectOxford.SpeakerRecognition.Contract;
 using Microsoft.ProjectOxford.SpeakerRecognition.Contract.Identification;
 using Microsoft.Win32;
+using SampleUserControlLibrary;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -48,9 +50,21 @@ namespace SPIDIdentificationAPI_WPF_Samples
     /// </summary>
     public partial class EnrollSpeakersPage : Page
     {
-        private string _selectedFile = "";
+        internal string _selectedFile = "";
 
         private SpeakerIdentificationServiceClient _serviceClient;
+
+        private MainWindow GetMainWindow()
+        {
+            if (MainWindow.SPIDWindow != null)
+            {
+                return MainWindow.SPIDWindow;
+            }
+            else
+            {
+                return (MainWindow)Application.Current.MainWindow;
+            }
+        }
 
         /// <summary>
         /// Constructor to initialize the Enroll Speakers page
@@ -61,13 +75,14 @@ namespace SPIDIdentificationAPI_WPF_Samples
 
             _speakersListFrame.Navigate(SpeakersListPage.SpeakersList);
 
-            MainWindow window = (MainWindow)Application.Current.MainWindow;
+            MainWindow window = GetMainWindow();
+
             _serviceClient = new SpeakerIdentificationServiceClient(window.ScenarioControl.SubscriptionKey);
         }
 
         private async void _addBtn_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow window = (MainWindow)Application.Current.MainWindow;
+            MainWindow window = GetMainWindow();
             try
             {
                 window.Log("Creating Speaker Profile...");
@@ -94,7 +109,7 @@ namespace SPIDIdentificationAPI_WPF_Samples
 
         private void _loadFileBtn_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow window = (MainWindow)Application.Current.MainWindow;
+            MainWindow window = GetMainWindow();
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "WAV Files(*.wav)|*.wav";
@@ -111,7 +126,7 @@ namespace SPIDIdentificationAPI_WPF_Samples
 
         private async void _enrollBtn_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow window = (MainWindow)Application.Current.MainWindow;
+            MainWindow window = GetMainWindow();
             try
             {
                 if (_selectedFile == "")
@@ -130,7 +145,7 @@ namespace SPIDIdentificationAPI_WPF_Samples
                 EnrollmentOperation enrollmentResult;
                 int numOfRetries = 10;
                 TimeSpan timeBetweenRetries = TimeSpan.FromSeconds(5.0);
-                while(numOfRetries > 0)
+                while (numOfRetries > 0)
                 {
                     await Task.Delay(timeBetweenRetries);
                     enrollmentResult = await _serviceClient.CheckEnrollmentStatusAsync(processPollingLocation);
@@ -145,7 +160,7 @@ namespace SPIDIdentificationAPI_WPF_Samples
                     }
                     numOfRetries--;
                 }
-                if(numOfRetries <= 0)
+                if (numOfRetries <= 0)
                 {
                     throw new EnrollmentException("Enrollment operation timeout.");
                 }

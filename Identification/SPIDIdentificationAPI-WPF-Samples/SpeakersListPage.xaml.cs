@@ -47,10 +47,22 @@ namespace SPIDIdentificationAPI_WPF_Samples
     public partial class SpeakersListPage : Page
     {
         private bool _speakersLoaded = false;
-        
+
         private SpeakerIdentificationServiceClient _serviceClient;
 
         private static SpeakersListPage s_speakersList = new SpeakersListPage();
+
+        private MainWindow GetMainWindow()
+        {
+            if (MainWindow.SPIDWindow != null)
+            {
+                return MainWindow.SPIDWindow;
+            }
+            else
+            {
+                return (MainWindow)Application.Current.MainWindow;
+            }
+        }
 
         /// <summary>
         /// Represents the only instance of the Speakers List Page
@@ -83,7 +95,7 @@ namespace SPIDIdentificationAPI_WPF_Samples
         /// <returns>Task to track the status of the asynchronous task.</returns>
         public async Task UpdateAllSpeakersAsync()
         {
-            MainWindow window = (MainWindow)Application.Current.MainWindow;
+            MainWindow window = GetMainWindow();
             try
             {
                 window.Log("Retrieving All Profiles...");
@@ -139,14 +151,45 @@ namespace SPIDIdentificationAPI_WPF_Samples
             return result;
         }
 
+        public async Task<string> ResetProfiles()
+        {
+            string retVal = string.Empty;
+            MainWindow window = GetMainWindow();
+
+            try
+            {
+
+                Profile[] allProfiles = await _serviceClient.GetProfilesAsync();
+                foreach (Profile p in allProfiles)
+                {
+                    window.Log("Deleting: " + p.ProfileId);
+                    await _serviceClient.DeleteProfileAsync(p.ProfileId);
+                }
+
+                retVal = "Reset Completed.";
+            }
+            catch (Exception e)
+            {
+                retVal = "Error: " + e.Message;
+            }
+
+            window.Log(retVal);
+            return retVal;
+        }
+
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             if (_speakersLoaded == false)
             {
-                MainWindow window = (MainWindow)Application.Current.MainWindow;
+                MainWindow window = GetMainWindow();
                 _serviceClient = new SpeakerIdentificationServiceClient(window.ScenarioControl.SubscriptionKey);
                 await UpdateAllSpeakersAsync();
             }
+        }
+
+        private async void _ResetBtn_Click(object sender, RoutedEventArgs e)
+        {
+            await ResetProfiles();
         }
     }
 }
