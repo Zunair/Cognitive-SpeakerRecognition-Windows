@@ -45,6 +45,11 @@ namespace SPIDIdentificationAPI_WPF_Samples
     public partial class MainWindow : Window
     {
         /// <summary>
+        /// Allows other applications to load it from codeline
+        /// </summary>
+        public static MainWindow SPIDWindow;
+
+        /// <summary>
         /// Gets the sample scenario control
         /// </summary>
         public SampleScenarios ScenarioControl
@@ -53,24 +58,6 @@ namespace SPIDIdentificationAPI_WPF_Samples
             {
                 return _scenariosControl;
             }
-        }
-
-        public static void _OnLoad()
-        {
-            //System.Diagnostics.Debugger.Break();
-
-            Thread t = new Thread(LoadMainWindow);
-            t.SetApartmentState(ApartmentState.STA);
-            t.Start();
-        }
-
-        public static MainWindow SPIDWindow;
-        public static void LoadMainWindow()
-        {
-            SPIDWindow = new MainWindow();
-            SPIDWindow.Show();
-            SPIDWindow.Closed += (s, e) => System.Windows.Threading.Dispatcher.ExitAllFrames();
-            System.Windows.Threading.Dispatcher.Run();
         }
 
         /// <summary>
