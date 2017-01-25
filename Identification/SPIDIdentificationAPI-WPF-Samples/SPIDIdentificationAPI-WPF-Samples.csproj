@@ -89,12 +89,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="InputBox.cs" />
     <Compile Include="SpeakersListPage.xaml.cs">
       <DependentUpon>SpeakersListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StaticClass.cs" />
-    <Compile Include="SubscriptionKey.cs" />
     <Page Include="EnrollSpeakersPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -161,6 +158,10 @@
     <ProjectReference Include="..\..\Cognitive-Common-Windows\SampleUserControlLibrary\SampleUserControlLibrary.csproj">
       <Project>{735929f0-f8f1-4d93-b027-5d034fa7892b}</Project>
       <Name>SampleUserControlLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPID\SPID.csproj">
+      <Project>{247a047f-1b1e-4366-a28d-81a67804660b}</Project>
+      <Name>SPID</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -34,8 +34,9 @@ namespace SPID
         static void GetMethods(Type type, ref ListBox lbox)
         {
             foreach (var method in type.GetMethods())
-            {
-                if (method.Attributes.HasFlag(System.Reflection.MethodAttributes.Static))
+            {                
+                if (method.Attributes.HasFlag(System.Reflection.MethodAttributes.Static | System.Reflection.MethodAttributes.Public) &&
+                    (method.ReturnType == typeof(string) || method.ReturnType == typeof(Task<string>)))
                 {
                     var parameters = method.GetParameters();
                     var parameterDescriptions = string.Join

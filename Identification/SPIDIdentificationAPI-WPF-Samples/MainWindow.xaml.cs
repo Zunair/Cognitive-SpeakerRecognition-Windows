@@ -35,6 +35,7 @@ using SampleUserControlLibrary;
 using System;
 using System.Threading;
 using System.Windows;
+using SPID;
 
 namespace SPIDIdentificationAPI_WPF_Samples
 {
@@ -114,7 +115,6 @@ namespace SPIDIdentificationAPI_WPF_Samples
         {
             try
             {
-
                 StaticClass.OnLoad();
                 //string a = await StaticClass.GetIdentity(@"\\SNXXMWPIT004\Users\zfayaz\AppData\Roaming\LINKS\Customization\Speech\Recognized\Zun.wav", "true");
                 string a = await StaticClass.GetIdentity(@"\\SNXXMWPIT004\Users\zfayaz\AppData\Roaming\LINKS\Customization\Speech\Recognized\Ash.wav", "true");

@@ -14,7 +14,7 @@ using jarvisWPF;
 
 namespace SPID
 {
-    class StaticClass
+    public class StaticClass
     {
 
         //#if DEBUG
@@ -23,7 +23,7 @@ namespace SPID
 //        private static string WordList = PublicClass.WordListPath + "SPID" + ".TXT";
 //#endif
 
-        internal static SpeakerIdentificationServiceClient _serviceClient { get; private set; }
+        public static SpeakerIdentificationServiceClient _serviceClient { get; private set; }
 
         #region Public Functions Used by LINKS
         /// <summary>
